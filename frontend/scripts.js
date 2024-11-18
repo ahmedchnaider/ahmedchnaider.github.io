@@ -40,9 +40,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // API Configuration
     const API_CONFIG = {
-        url: 'https://eu-vg-edge.moeaymandev.workers.dev/agents/i8b98uq6pli7bkn0/interact/11',
+        url: '/api/interact',
         headers: {
-            'Authorization': 'Bearer vg_TxeKdi16uYGkYiOtn2Jf',
             'Content-Type': 'application/json'
         }
     };
@@ -59,6 +58,19 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Chat Functions
+    async function interactWithAgent(data) {
+        try {
+            const response = await fetch(API_CONFIG.url, {
+                method: 'POST',
+                headers: API_CONFIG.headers,
+                body: JSON.stringify(data)
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
     function sendMessage(message) {
         // Include the business model context if one is selected
         const contextPrefix = currentBusinessModel 
@@ -67,17 +79,12 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const enhancedMessage = contextPrefix + message;
 
-        fetch(API_CONFIG.url, {
-            method: 'POST',
-            headers: API_CONFIG.headers,
-            body: JSON.stringify({
-                action: {
-                    type: 'text',
-                    payload: enhancedMessage
-                }
-            })
+        interactWithAgent({
+            action: {
+                type: 'text',
+                payload: enhancedMessage
+            }
         })
-        .then(response => response.json())
         .then(data => {
             // Get all bot turns
             const botTurns = data.turns.filter(turn => turn.from === "bot");
@@ -194,17 +201,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const enhancedMessage = contextPrefix + message;
 
             // Make API call with context
-            fetch(API_CONFIG.url, {
-                method: 'POST',
-                headers: API_CONFIG.headers,
-                body: JSON.stringify({
-                    action: {
-                        type: 'text',
-                        payload: enhancedMessage
-                    }
-                })
+            interactWithAgent({
+                action: {
+                    type: 'text',
+                    payload: enhancedMessage
+                }
             })
-            .then(response => response.json())
             .then(data => {
                 const botTurns = data.turns.filter(turn => turn.from === "bot");
                 const lastBotTurn = botTurns[botTurns.length - 1];
@@ -242,17 +244,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const enhancedMessage = contextPrefix + message;
             
             // Make API call with context
-            fetch(API_CONFIG.url, {
-                method: 'POST',
-                headers: API_CONFIG.headers,
-                body: JSON.stringify({
-                    action: {
-                        type: 'text',
-                        payload: enhancedMessage
-                    }
-                })
+            interactWithAgent({
+                action: {
+                    type: 'text',
+                    payload: enhancedMessage
+                }
             })
-            .then(response => response.json())
             .then(data => {
                 const botTurns = data.turns.filter(turn => turn.from === "bot");
                 const lastBotTurn = botTurns[botTurns.length - 1];
