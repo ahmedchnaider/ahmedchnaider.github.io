@@ -27,4 +27,15 @@ app.post('/api/interact', async (req, res) => {
     }
 });
 
+app.get('/api/widget-config', (req, res) => {
+    res.json({
+        ID: process.env.WIDGET_ID,
+        region: process.env.WIDGET_REGION,
+        render: 'bottom-right',
+        stylesheets: [
+            "https://vg-bunny-cdn.b-cdn.net/vg_live_build/styles.css"
+        ]
+    });
+});
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`)); 
