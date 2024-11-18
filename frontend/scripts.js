@@ -700,30 +700,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Update the toggle function
     function toggleChatWidget() {
-        // Try to find the chat container
         let chatContainer = document.querySelector('.vg-container');
         
-        // If container doesn't exist, create and initialize it
         if (!chatContainer) {
-            // Initialize TIXAE widget if not already done
             if (!window.VG_SCRIPT_LOADED) {
-                window.VG_CONFIG = {
-                    ID: "nhxcjza5hhmlkwli",
-                    region: 'eu',
-                    render: 'bottom-right',
-                    stylesheets: [
-                        "https://vg-bunny-cdn.b-cdn.net/vg_live_build/styles.css"
-                    ]
-                };
-                
-                const script = document.createElement("script");
-                script.src = "https://vg-bunny-cdn.b-cdn.net/vg_live_build/vg_bundle.js";
-                script.onload = function() {
-                    window.VG_SCRIPT_LOADED = true;
-                    // Try again after script loads
-                    setTimeout(toggleChatWidget, 100);
-                };
-                document.body.appendChild(script);
+                // Load configuration from backend
+                fetch('/api/widget-config')
+                    .then(response => response.json())
+                    .then(config => {
+                        window.VG_CONFIG = config;
+                        
+                        const script = document.createElement("script");
+                        script.src = "https://vg-bunny-cdn.b-cdn.net/vg_live_build/vg_bundle.js";
+                        script.onload = function() {
+                            window.VG_SCRIPT_LOADED = true;
+                            setTimeout(toggleChatWidget, 100);
+                        };
+                        document.body.appendChild(script);
+                    })
+                    .catch(error => {
+                        console.error('Error loading widget config:', error);
+                    });
                 return;
             }
             return;
@@ -742,16 +739,6 @@ document.addEventListener('DOMContentLoaded', function() {
             chatContainer.style.display = 'none';
         }
     }
-
-    // Remove the self-executing function since we're handling initialization in toggleChatWidget
-    window.VG_CONFIG = {
-        ID: "nhxcjza5hhmlkwli",
-        region: 'eu',
-        render: 'bottom-right',
-        stylesheets: [
-            "https://vg-bunny-cdn.b-cdn.net/vg_live_build/styles.css"
-        ]
-    };
 
 });
 
