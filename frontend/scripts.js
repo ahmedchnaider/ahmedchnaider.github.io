@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // API Configuration
     const API_CONFIG = {
         url: isGitHubPages ? 
-            'https://your-render-backend-url.onrender.com/api/interact' : // You'll add the actual Render URL later
+            'https://automind-backend.onrender.com/api/interact' : // You'll add the actual Render URL later
             'http://localhost:3000/api/interact',
         headers: {
             'Content-Type': 'application/json'
