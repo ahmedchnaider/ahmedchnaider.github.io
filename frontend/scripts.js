@@ -41,8 +41,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // API Configuration
     const API_CONFIG = {
         url: isGitHubPages ? 
-            'https://your-render-url.onrender.com/api/interact' :
-            'http://localhost:3000/api/interact'
+            'https://automind-backend.onrender.com/api/interact' :
+            'http://localhost:3000/api/interact',
+        headers: {
+            'Content-Type': 'application/json'
+        }
     };
 
     // Add this variable to track current business model
@@ -743,7 +746,7 @@ document.addEventListener('DOMContentLoaded', function() {
     async function loadWidgetConfig() {
         try {
             const response = await fetch(isGitHubPages ? 
-                'https://your-render-backend-url.onrender.com/api/widget-config' : 
+                'https://automind-backend.onrender.com/api/widget-config' : 
                 'http://localhost:3000/api/widget-config'
             );
             const config = await response.json();
