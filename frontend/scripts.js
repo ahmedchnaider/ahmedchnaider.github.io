@@ -40,7 +40,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // API Configuration
     const API_CONFIG = {
-        url: '/api/interact',
+        url: isGitHubPages ? 
+            'https://your-render-backend-url.onrender.com/api/interact' : // You'll add the actual Render URL later
+            'http://localhost:3000/api/interact',
         headers: {
             'Content-Type': 'application/json'
         }
@@ -739,6 +741,28 @@ document.addEventListener('DOMContentLoaded', function() {
             chatContainer.style.display = 'none';
         }
     }
+
+    // Add widget configuration loading
+    async function loadWidgetConfig() {
+        try {
+            const response = await fetch(isGitHubPages ? 
+                'https://your-render-backend-url.onrender.com/api/widget-config' : 
+                'http://localhost:3000/api/widget-config'
+            );
+            const config = await response.json();
+            window.VG_CONFIG = config;
+            
+            const script = document.createElement("script");
+            script.src = "https://vg-bunny-cdn.b-cdn.net/vg_live_build/vg_bundle.js";
+            script.defer = true;
+            document.body.appendChild(script);
+        } catch (error) {
+            console.error('Error loading widget config:', error);
+        }
+    }
+
+    // Call this when the document loads
+    loadWidgetConfig();
 
 });
 
